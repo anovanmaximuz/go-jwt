@@ -28,7 +28,7 @@ func main() {
 	router.POST("/person", auth, inDB.CreatePerson)
 	router.PUT("/person", auth, inDB.UpdatePerson)
 	router.DELETE("/person/:id", auth, inDB.DeletePerson)
-	router.Run(":3000")
+	router.Run(":8080")
 }
 
 func loginHandler(c *gin.Context) {

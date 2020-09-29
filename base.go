@@ -16,6 +16,7 @@ type Credential struct {
 	Password string `json:"password"`
 }
 
+
 func main() {
 	db := config.DBInit()
 	inDB := &controllers.InDB{DB: db}
@@ -31,28 +32,31 @@ func main() {
 	router.Run(":8080")
 }
 
+func response(code,message,data string) string{
+     return "ok";
+}
+
 func loginHandler(c *gin.Context) {
 	var user Credential
 	err := c.Bind(&user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"status":  http.StatusBadRequest,
+			"code":  http.StatusBadRequest,
 			"message": "can't bind struct",
 		})
 	}
 	if user.Username != "anovan" {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"status":  http.StatusUnauthorized,
+			"code":  http.StatusUnauthorized,
 			"message": "wrong username or password",
 		})
-	} else {
-		if user.Password != "ano123" {
+	} else 	if user.Password != "ano123" {
 			c.JSON(http.StatusUnauthorized, gin.H{
-				"status":  http.StatusUnauthorized,
+				"code":  http.StatusUnauthorized,
 				"message": "wrong username or password",
 			})
-		}
-	}
+		
+	}else{
 	sign := jwt.New(jwt.GetSigningMethod("HS256"))
 	token, err := sign.SignedString([]byte("secret"))
 	if err != nil {
@@ -62,8 +66,9 @@ func loginHandler(c *gin.Context) {
 		c.Abort()
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"token": token,
+		"code":http.StatusOK,"message":"success","data": token,
 	})
+       }
 }
 
 func auth(c *gin.Context) {
@@ -81,6 +86,7 @@ func auth(c *gin.Context) {
 		fmt.Println("token verified")
 	} else {
 		result := gin.H{
+			"code":http.StatusUnauthorized,
 			"message": "not authorized",
 			"error":   err.Error(),
 		}

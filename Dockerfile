@@ -7,6 +7,6 @@ RUN go get github.com/gin-gonic/gin
 RUN go get github.com/go-sql-driver/mysql
 WORKDIR /go/src/app
 COPY * ./
-RUN go build -o base 
+#RUN go build -o base 
 EXPOSE 8000
 CMD ["./base"]

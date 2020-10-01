@@ -29,7 +29,7 @@ func main() {
 	router.POST("/person", auth, inDB.CreatePerson)
 	router.PUT("/person", auth, inDB.UpdatePerson)
 	router.DELETE("/person/:id", auth, inDB.DeletePerson)
-	router.Run(":8080")
+	router.Run(":8180")
 }
 
 func response(code,message,data string) string{

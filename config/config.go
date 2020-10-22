@@ -1,7 +1,7 @@
 package config
 
 import (
-	"../structs"
+	"github.com/anovanmaximuz/go-jwt/structs"
 	"github.com/jinzhu/gorm"
 )
 

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"./config"
-	"./controllers"
+	"github.com/anovanmaximuz/go-jwt/config"
+	"github.com/anovanmaximuz/go-jwt/controllers"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"

@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"net/http"
-
 	"github.com/anovanmaximuz/go-jwt/structs"
 	"github.com/gin-gonic/gin"
 )
@@ -15,14 +14,14 @@ func (idb *InDB) GetPerson(c *gin.Context) {
 	id := c.Param("id")
 	err := idb.DB.Where("id = ?", id).First(&person).Error
 	if err != nil {
-		result = gin.H{
-			"result": err.Error(),
-			"count":  0,
+		result = gin.H{	
+			"code":400,		
+			"data": err.Error(),
 		}
 	} else {
 		result = gin.H{
-			"result": person,
-			"count":  1,
+			"code":200,
+			"data": person,
 		}
 	}
 
@@ -38,12 +37,13 @@ func (idb *InDB) GetPersons(c *gin.Context) {
 	idb.DB.Find(&persons)
 	if len(persons) <= 0 {
 		result = gin.H{
-			"result": nil,
-			"count":  0,
+			"code":400,
+			"data": nil,			
 		}
 	} else {
 		result = gin.H{
-			"result": persons,
+			"code":200,			
+			"data": persons,
 			"count":  len(persons),
 		}
 	}
@@ -56,13 +56,17 @@ func (idb *InDB) CreatePerson(c *gin.Context) {
 		person structs.Person
 		result gin.H
 	)
+	
 	first_name := c.PostForm("first_name")
 	last_name := c.PostForm("last_name")
+	password  := c.PostForm("password")
 	person.First_Name = first_name
 	person.Last_Name = last_name
+	person.Password = password
 	idb.DB.Create(&person)
 	result = gin.H{
-		"result": person,
+		"code":200,
+		"data": person,
 	}
 	c.JSON(http.StatusOK, result)
 }
@@ -80,7 +84,8 @@ func (idb *InDB) UpdatePerson(c *gin.Context) {
 	err := idb.DB.First(&person, id).Error
 	if err != nil {
 		result = gin.H{
-			"result": "data not found",
+			"code":400,
+			"data": "data not found",
 		}
 	}
 	newPerson.First_Name = first_name
@@ -88,11 +93,13 @@ func (idb *InDB) UpdatePerson(c *gin.Context) {
 	err = idb.DB.Model(&person).Updates(newPerson).Error
 	if err != nil {
 		result = gin.H{
-			"result": "update failed",
+			"code":301,
+			"data": "update failed",
 		}
 	} else {
 		result = gin.H{
-			"result": "successfully updated data",
+			"code":200,
+			"data": "successfully updated data",
 		}
 	}
 	c.JSON(http.StatusOK, result)
@@ -107,17 +114,20 @@ func (idb *InDB) DeletePerson(c *gin.Context) {
 	err := idb.DB.First(&person, id).Error
 	if err != nil {
 		result = gin.H{
-			"result": "data not found",
+			"code":301,
+			"data": "data not found",
 		}
 	}
 	err = idb.DB.Delete(&person).Error
 	if err != nil {
 		result = gin.H{
-			"result": "delete failed",
+			"code":302,
+			"data": "delete failed",
 		}
 	} else {
 		result = gin.H{
-			"result": "Data deleted successfully",
+			"code":200,
+			"data": "Data deleted successfully",
 		}
 	}
 

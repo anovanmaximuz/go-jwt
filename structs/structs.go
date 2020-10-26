@@ -6,4 +6,5 @@ type Person struct {
 	gorm.Model
 	First_Name string
 	Last_Name  string
+	Password string
 }

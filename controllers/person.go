@@ -2,8 +2,7 @@ package controllers
 
 import (
 	"net/http"
-
-	"crypto/md5"
+	"golang.org/x/crypto/bcrypt"
 	"github.com/anovanmaximuz/go-jwt/structs"
 	"github.com/gin-gonic/gin"
 )
@@ -53,6 +52,17 @@ func (idb *InDB) GetPersons(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
+func HashPassword(password string) (string, error) {
+    bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+    return string(bytes), err
+}
+
+func CheckPasswordHash(password, hash string) bool {
+    err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+    return err == nil
+}
+
+
 func (idb *InDB) CreatePerson(c *gin.Context) {
 	var (
 		person structs.Person
@@ -64,9 +74,17 @@ func (idb *InDB) CreatePerson(c *gin.Context) {
 	password  := c.PostForm("password")
 	person.First_Name = first_name
 	person.Last_Name = last_name
-	data := []byte("hello")
+	if password != "" {
+     		hash, err := HashPassword(password)
+     		if err != nil {
+        		return
+     		}
+     		password = hash
+  	}
 
-	person.Password = string(data[:])
+
+
+	person.Password = password
 	idb.DB.Create(&person)
 	result = gin.H{
 		"code":200,

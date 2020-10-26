@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"net/http"
+
+	"crypto/md5"
 	"github.com/anovanmaximuz/go-jwt/structs"
 	"github.com/gin-gonic/gin"
 )
@@ -62,7 +64,9 @@ func (idb *InDB) CreatePerson(c *gin.Context) {
 	password  := c.PostForm("password")
 	person.First_Name = first_name
 	person.Last_Name = last_name
-	person.Password = password
+	data := []byte("hello")
+
+	person.Password = string(data[:])
 	idb.DB.Create(&person)
 	result = gin.H{
 		"code":200,

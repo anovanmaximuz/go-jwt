@@ -1,4 +1,4 @@
-# Example Go with Docker
+# Example Go+JWT+Gorm with Docker
 
 ### Intruksi
 
@@ -24,3 +24,7 @@ compose up
 ``` bash
 docker-compose up
 ```
+
+### Next step
+- Dockernize the database into container 
+- API Gateway

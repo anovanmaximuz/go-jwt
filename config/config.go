@@ -8,7 +8,7 @@ import (
 // DBInit create connection to database
 func DBInit() *gorm.DB {
 	//db, err := gorm.Open("mysql", "root:@tcp(128.199.211.144:3306)/godb?charset=utf8&parseTime=True&loc=Local")
-	db, err := gorm.Open("mysql","anovan:K@W!anaconda098@(localhost)/delivery?charset=utf8&parseTime=True&loc=Local")
+	db, err := gorm.Open("mysql","anovan:K@W!anaconda098@(128.199.211.144:3306)/delivery?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic("failed to connect to database")
 	}

@@ -1,0 +1,10 @@
+version: "3.3"
+services:
+  web:
+    build: ./
+    environment:
+      - GIN_MODE=debug
+    ports:
+      - "8180:8180"
+  
+
